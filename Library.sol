@@ -5,6 +5,12 @@ contract Library {
     bytes32[] books;
     address libaddress;
     
+    event NotAvailable();
+    event AllOccupied();
+    event CollectBookFromLibrary();
+    event YouDontHaveThisBook();
+    event ReturnBookToLibrary();
+    
     function Library(bytes32[] book_names) public {
         books = book_names;
         libaddress = msg.sender;
@@ -15,25 +21,25 @@ contract Library {
     
     function request_book(bytes32 book_name) public{
         if (check_book(book_name) == false) {
-            // Event - Not available
+            NotAvailable();
             throw;
         }
         
         if (owner[book_name] != libaddress) {
-            // Event Housefull
+            AllOccupied();
             throw;
         }
     
         owner[book_name] = msg.sender;
-        // Event Call Collect book
+        CollectBookFromLibrary();
     }
     
     function return_book(bytes32 book_name) public {
         if (owner[book_name] != msg.sender) {
-            // Event - You don't have book
-            throw;
+            YouDontHaveThisBook();
+            return;
         }
-        // Event - return book 
+        ReturnBookToLibrary();
         owner[book_name] = libaddress;
     }
     
