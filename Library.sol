@@ -5,6 +5,7 @@ contract Library {
     bytes32[] books;
     address libaddress;
     enum State {Stable, TBR, TBC, TBT} //default state is the first one.
+    // TBC - To be collected, TBT - To be transferred, TBR - To be returned
     State state;
     mapping (bytes32 => State) status;
     uint value;
@@ -13,6 +14,11 @@ contract Library {
     // mapping (address => bytes32) phone; - Later
     
     modifier checkValue(uint newValue) { require(newValue == 2*value); _; }
+    modifier checkNotOwner(bytes32 book) {require(msg.sender != owner[book]); _;}
+    modifier checkOwner(bytes32 book) {require(msg.sender == owner[book]); _;}
+    modifier checkLibrary() {require(msg.sender == libaddress); _;}
+    modifier checkStatus(bytes32 book) {require(status[book] != State.Stable); _;}
+    modifier checkNonZeroValue(uint v) { require(v > 0); _; }
     
     event NotAvailable();
     event AllOccupied();
@@ -22,8 +28,11 @@ contract Library {
     event CollectBookFromUser();
     event RecieveConfirmedByUser();
     event RecieveConfirmedByLibrary();
+    event ContractDeployed();
+    event ReturnConfirmed();
     
     function Library(bytes32[] book_names) 
+        checkNonZeroValue(msg.value)
         public
         payable
     {
@@ -33,40 +42,48 @@ contract Library {
         for (uint i = 0; i < books.length; i++) {
             owner[books[i]] = libaddress;
         }
+        ContractDeployed();
     }
     
     function request_book(bytes32 book_name) 
         public
         checkValue(msg.value)
+        checkNotOwner(book_name)
         payable
     {
         if (check_book(book_name) == false) {
             NotAvailable();
-            throw;
-        }
-        
-        if (owner[book_name] != libaddress && status[book_name] == State.TBR) {
-            address add = owner[book_name];
-            preowner[book_name] = add;
-            owner[book_name] = msg.sender;
-            status[book_name] = State.TBT;
-            message[add] = "Coordinate with new owner with phone number : 999";
-            message[msg.sender] = "Book available with person with phone number: 988";
-            CollectBookFromUser();
             return;
         }
-    
-        owner[book_name] = msg.sender;
-        status[book_name] = State.TBC;
-        CollectBookFromLibrary();
+        
+        if (owner[book_name] != libaddress) {
+            if (status[book_name] == State.TBR) {
+                address add = owner[book_name];
+                preowner[book_name] = add;
+                owner[book_name] = msg.sender;
+                status[book_name] = State.TBT;
+                message[add] = "Coordinate with new owner with phone number : 999";
+                message[msg.sender] = "Book available with person with phone number: 988";
+                CollectBookFromUser();
+                return;
+            }
+            else {
+                AllOccupied();
+                return;
+            }
+        }
+        else {
+            owner[book_name] = msg.sender;
+            status[book_name] = State.TBC;
+            CollectBookFromLibrary();
+        }
     }
     
     function recieved_by_user(bytes32 book_name) 
+        checkOwner(book_name)
+        checkStatus(book_name)
         public
     {
-        if(owner[book_name] != msg.sender || status[book_name] == State.Stable){
-            throw;
-        }
         if(status[book_name] == State.TBC) {
             msg.sender.transfer(value);
         }
@@ -79,20 +96,40 @@ contract Library {
     }
     
     function return_book(bytes32 book_name) 
+        checkOwner(book_name)
         public 
     {
-        if (owner[book_name] != msg.sender) {
-            YouDontHaveThisBook();
+        if (status[book_name] == State.TBC) {
+            status[book_name] = State.Stable;
+            owner[book_name] = libaddress;
+            msg.sender.transfer(2*value);
+            message[msg.sender] = "Return Confirmed!";
+            ReturnConfirmed();
+        }
+        else if (status[book_name] == State.TBT) {
+            status[book_name] = State.TBR;
+            address add = owner[book_name];
+            owner[book_name] = preowner[book_name];
+            msg.sender.transfer(2*value);
+            preowner[book_name] = add;
+            message[owner[book_name]] = "Owner doesn't want the book anymore. Return to Library";
+            message[msg.sender] = "Return Confirmed!";
+            ReturnConfirmed();
             return;
         }
-        ReturnBookToLibrary();
-        status[book_name] = State.TBR;
+        else {
+            ReturnBookToLibrary();
+            status[book_name] = State.TBR;
+            return;
+        }
     }
     
     function recieved_by_library(bytes32 book_name) 
+        checkLibrary()
+        checkStatus(book_name)
         public 
     {
-        if(msg.sender != libaddress || status[book_name] == State.Stable){
+        if (status[book_name] != State.TBR) {
             throw;
         }
         status[book_name] = State.Stable;
@@ -121,7 +158,8 @@ contract Library {
             
         return owner[book_name];
     }
-    
+
+
     function access_message() 
         public 
         returns(string) 
