@@ -20,18 +20,36 @@ contract Library {
     modifier checkStatus(bytes32 book) {require(status[book] != State.Stable); _;}
     modifier checkNonZeroValue(uint v) { require(v > 0); _; }
     
-    event NotAvailable();
-    event AllOccupied();
-    event CollectBookFromLibrary();
-    event YouDontHaveThisBook();
-    event ReturnBookToLibrary();
-    event CollectBookFromUser();
-    event RecieveConfirmedByUser();
+    event NotAvailable(
+        string mesg
+    );
+    event AllOccupied(
+        string mesg
+    );
+    event CollectBookFromLibrary(
+        string mesg
+    );
+    event YouDontHaveThisBook(
+        string mesg
+    );
+    event ReturnBookToLibrary(
+        string mesg
+    );
+    event CollectBookFromUser(
+        string mesg
+    );
+    event RecieveConfirmedByUser(
+        string mesg
+    );
     event RecieveConfirmedByLibrary(
         string message
     );
-    event ContractDeployed();
-    event ReturnConfirmed();
+    event ContractDeployed(
+        string mesg
+    );
+    event ReturnConfirmed(
+        string mesg
+    );
     
     function Library(bytes32[] book_names) 
         checkNonZeroValue(msg.value)
@@ -44,7 +62,8 @@ contract Library {
         for (uint i = 0; i < books.length; i++) {
             owner[books[i]] = libaddress;
         }
-        ContractDeployed();
+        //string mesg = "Contract has been deployed succesfully";
+        ContractDeployed("Contract has been deployed succesfully");
     }
     
     function request_book(bytes32 book_name) 
@@ -54,7 +73,7 @@ contract Library {
         payable
     {
         if (check_book(book_name) == false) {
-            NotAvailable();
+            NotAvailable("No such book is available yet.");
             return;
         }
         
@@ -66,18 +85,18 @@ contract Library {
                 status[book_name] = State.TBT;
                 message[add] = "Coordinate with new owner with phone number : 999";
                 message[msg.sender] = "Book available with person with phone number: 988";
-                CollectBookFromUser();
+                CollectBookFromUser("Collect book your peer. Check your message.");
                 return;
             }
             else {
-                AllOccupied();
+                AllOccupied("Sorry. No such book is vacant currently.");
                 return;
             }
         }
         else {
             owner[book_name] = msg.sender;
             status[book_name] = State.TBC;
-            CollectBookFromLibrary();
+            CollectBookFromLibrary("Collect book from library.");
         }
     }
     
@@ -94,7 +113,7 @@ contract Library {
             preowner[book_name].transfer(value);
         }
         status[book_name] = State.Stable;
-        RecieveConfirmedByUser();
+        RecieveConfirmedByUser("Recieve confirmed.");
     }
     
     function return_book(bytes32 book_name) 
@@ -106,7 +125,7 @@ contract Library {
             owner[book_name] = libaddress;
             msg.sender.transfer(2*value);
             message[msg.sender] = "Return Confirmed!";
-            ReturnConfirmed();
+            ReturnConfirmed("Return Confirmed.");
         }
         else if (status[book_name] == State.TBT) {
             status[book_name] = State.TBR;
@@ -116,11 +135,11 @@ contract Library {
             preowner[book_name] = add;
             message[owner[book_name]] = "Owner doesn't want the book anymore. Return to Library";
             message[msg.sender] = "Return Confirmed!";
-            ReturnConfirmed();
+            ReturnConfirmed("Return Confirmed");
             return;
         }
         else {
-            ReturnBookToLibrary();
+            ReturnBookToLibrary("Return book to library.");
             status[book_name] = State.TBR;
             return;
         }
@@ -167,5 +186,12 @@ contract Library {
         returns(string) 
     {
         return message[msg.sender];
+    }
+    
+    function balance() 
+        public 
+        returns(uint)
+    {
+        return msg.sender.balance/1 ether; 
     }
 }
