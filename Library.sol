@@ -6,7 +6,7 @@ contract Library {
     address libaddress;
     enum State {Stable, TBR, TBC, TBT} //default state is the first one.
     // TBC - To be collected, TBT - To be transferred, TBR - To be returned
-    State state;
+    
     mapping (bytes32 => State) status;
     uint value;
     mapping (address => string) message;
@@ -27,7 +27,9 @@ contract Library {
     event ReturnBookToLibrary();
     event CollectBookFromUser();
     event RecieveConfirmedByUser();
-    event RecieveConfirmedByLibrary();
+    event RecieveConfirmedByLibrary(
+        string message
+    );
     event ContractDeployed();
     event ReturnConfirmed();
     
@@ -135,7 +137,7 @@ contract Library {
         status[book_name] = State.Stable;
         owner[book_name].transfer(value);
         owner[book_name] = libaddress;
-        RecieveConfirmedByLibrary();
+        RecieveConfirmedByLibrary("Recieve Confirmed");
     }
     
     function check_book(bytes32 book_name) 
@@ -167,4 +169,3 @@ contract Library {
         return message[msg.sender];
     }
 }
-
