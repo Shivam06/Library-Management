@@ -30,7 +30,6 @@ contract Library {
     event RecieveConfirmedByLibrary();
     event ContractDeployed();
     event ReturnConfirmed();
-    event LessValue();
     
     function Library(bytes32[] book_names) 
         checkNonZeroValue(msg.value)
@@ -53,11 +52,6 @@ contract Library {
         checkNotOwner(book_name)
         payable
     {
-        if (msg.value != 2*value) {
-            LessValue();
-            return;
-        }
-        
         if (check_book(book_name) == false) {
             NotAvailable();
             return;
@@ -76,6 +70,7 @@ contract Library {
             }
             else {
                 AllOccupied();
+                msg.sender.transfer(2*value);
                 return;
             }
         }
@@ -83,6 +78,8 @@ contract Library {
             owner[book_name] = msg.sender;
             status[book_name] = State.TBC;
             CollectBookFromLibrary();
+            preowner[book_name] = libaddress;
+            message[msg.sender] = "Collect from library!";
         }
     }
     
@@ -111,22 +108,22 @@ contract Library {
             owner[book_name] = libaddress;
             msg.sender.transfer(2*value);
             message[msg.sender] = "Return Confirmed!";
-            RecieveConfirmedByLibrary();
+            ReturnConfirmed();
         }
         else if (status[book_name] == State.TBT) {
             status[book_name] = State.TBR;
             address add = owner[book_name];
             owner[book_name] = preowner[book_name];
             msg.sender.transfer(2*value);
-            preowner[book_name] = add;
             message[owner[book_name]] = "Owner doesn't want the book anymore. Return to Library";
             message[msg.sender] = "Return Confirmed!";
-            RecieveConfirmedByLibrary();
+            ReturnConfirmed();
             return;
         }
         else {
             ReturnBookToLibrary();
             status[book_name] = State.TBR;
+            preowner[book_name] = msg.sender;
             return;
         }
     }
