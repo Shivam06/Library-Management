@@ -241,7 +241,7 @@ if (typeof web3 !== 'undefined') {
 	}
 ]);
 
-       var LibInstance = LibContract.at('0x7a525f52484ca690d3e10fef3528f5ae50c6d6e3');
+       var LibInstance = LibContract.at('0x01ba7bfd03b2c86907569023a457d8fe9c03b8dc');
 
        //Event - Not Available
        var event_not_available = LibInstance.NotAvailable();
