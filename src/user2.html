@@ -13,6 +13,11 @@
 <body>
 	<h1 align="center"> DTU Library </h1>	
 	<br>
+
+	<div class = "output-box" align = "center">
+		<p id ="output"></p>
+	</div>
+
 	<div class = "request-content" align="center">
 		<span style = "margin-right: 17%">Request book: <br></span>
 		<input type="text" name = "request" id="request-book"> 
@@ -294,54 +299,54 @@
 	}
 ]);
 
-       var LibInstance = LibContract.at('0xed085db25917a65a130635af28e76506a567ad14');
+       var LibInstance = LibContract.at('0xda8a15f898a1f7032ff90bec6a9fa60efea9e55f');
 
        //Event - Not Available
        var event_not_available = LibInstance.NotAvailable();
        event_not_available.watch(function() {
-       		$("#request-output").html("Book Not Available.")
+       		$("#output").html("Book Not Available.")
        		console.log("Not Available");
        })
 
        // Event - Collect from User
        var event_collect_from_user = LibInstance.CollectBookFromUser();
        event_collect_from_user.watch(function() {
-       		$("#request-output").html("Collect book from user. See your message.")
+       		$("#output").html("Collect book from user. See your message.")
        		console.log("Collect book from user");
        });
 
        //Event - Collect from Library
        var event_collect_from_library = LibInstance.CollectBookFromLibrary();
        event_collect_from_library.watch(function() {
-       		$("#request-output").html("Collect book from library.")
+       		$("#output").html("Collect book from library.")
        		console.log("Collect book from library");
        });
 
        // Event - All Occupied
        var event_all_occupied = LibInstance.AllOccupied();
        event_all_occupied.watch(function() {
-       		$("#request-output").html("All Occupied!")
+       		$("#output").html("All Occupied!")
        		console.log("All Occupied.");
        });
 
        //Event - Recieve confirmed by user
        var event_recieve_confirmed = LibInstance.RecieveConfirmedByUser();
        event_recieve_confirmed.watch(function(){
-       		$("#recieved-output").html("Recieve Confirmed. Thanks!")
+       		$("#output").html("Recieve Confirmed. Thanks!")
        		console.log("Recieve confirmed");
        });
 
        //Event - Return confirmed
        var event_return_confirmed = LibInstance.ReturnConfirmed();
        event_return_confirmed.watch(function() {
-       		$("#return-output").html("Return Confirmed by Library")
+       		$("#output").html("Return Confirmed by Library")
        		console.log("Return confirmed");
        });
 
        // Event - Return to library
        var event_return_book_to_library = LibInstance.ReturnBookToLibrary();
        event_return_book_to_library.watch(function() {
-       		$("#return-output").html("Return book to library.")
+       		$("#output").html("Return book to library.")
        		console.log("Return book to library.");
        });
 

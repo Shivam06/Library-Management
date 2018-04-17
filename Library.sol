@@ -137,9 +137,12 @@ contract Library {
             throw;
         }
         status[book_name] = State.Stable;
+        address add = owner[book_name];
         owner[book_name].transfer(value);
         owner[book_name] = libaddress;
         RecieveConfirmedByLibrary();
+        message[add] = "Library has recieved the book. Thanks!";
+        return;
     }
     
     function check_book(bytes32 book_name) 
