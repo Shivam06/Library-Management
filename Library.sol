@@ -7,7 +7,7 @@ contract Library {
     enum State {Stable, TBR, TBC, TBT} //default state is the first one.
     // TBC - To be collected, TBT - To be transferred, TBR - To be returned
     
-    mapping (bytes32 => State) status;
+    mapping (bytes32 => State) public status;
     uint value;
     mapping (address => string) message;
     mapping (bytes32 => address) public preowner;
