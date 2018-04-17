@@ -54,6 +54,7 @@ contract Library {
     {
         if (check_book(book_name) == false) {
             NotAvailable();
+            msg.sender.transfer(2*value);
             return;
         }
         
@@ -116,7 +117,7 @@ contract Library {
             owner[book_name] = preowner[book_name];
             msg.sender.transfer(2*value);
             message[owner[book_name]] = "Owner doesn't want the book anymore. Return to Library";
-            message[msg.sender] = "Return Confirmed!";
+            message[msg.sender] = "Return Confirmed! Your ethers have been transferred to your account.";
             ReturnConfirmed();
             return;
         }
