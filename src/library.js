@@ -1,3 +1,7 @@
+window.onload = function() {
+	$("#notify-box").hide();
+};
+
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
 } else {
@@ -16,48 +20,40 @@ var LibraryContract = web3.eth.contract([
 		"type": "event"
 	},
 	{
-		"constant": false,
+		"anonymous": false,
 		"inputs": [],
-		"name": "access_message",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "AllOccupied",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "NotAvailable",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "RecieveConfirmedByUser",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "RecieveConfirmedByLibrary",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "ContractDeployed",
+		"type": "event"
 	},
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "balance",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "book_name",
-				"type": "bytes32"
-			}
-		],
-		"name": "get_owner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
+		"name": "delete_message",
+		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -130,58 +126,51 @@ var LibraryContract = web3.eth.contract([
 		"type": "constructor"
 	},
 	{
-		"anonymous": false,
+		"constant": true,
 		"inputs": [],
-		"name": "ContractDeployed",
-		"type": "event"
+		"name": "access_message",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
-		"anonymous": false,
+		"constant": true,
 		"inputs": [],
-		"name": "RecieveConfirmedByLibrary",
-		"type": "event"
+		"name": "balance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "NotAvailable",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "AllOccupied",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "CollectBookFromLibrary",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "YouDontHaveThisBook",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "ReturnBookToLibrary",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "CollectBookFromUser",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "RecieveConfirmedByUser",
-		"type": "event"
+		"constant": true,
+		"inputs": [
+			{
+				"name": "book_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "get_owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"constant": true,
@@ -241,27 +230,18 @@ var LibraryContract = web3.eth.contract([
 		"type": "function"
 	}
 ]);
-        
-Library = LibraryContract.at('0xc9aaf1dd281bb8fb7236cc0e0a2c5f5d60b60724');
 
-Library.RecieveConfirmedByLibrary().watch(function(error){
-    if(!error) {
-        alert("Recieve Confirmed!");
-    } else {
-        alert('Some error occured');
-    }
-});
+Library = LibraryContract.at('0x2700ae13fb8b81f28c32bad9dc40b5ae5a494bd5');
 
-Library.NotAvailable().watch(function(error){
-    if(!error) {
-        alert("Book not available!");
-    } else {
-        alert("Some error occured");
-    }
-});
+var event_recieve_confirmed = Library.RecieveConfirmedByLibrary();
 
-$("#recieve_confirm_button").click(function() {
-    Library.recieved_by_library($("#recieve_confirm_book_name").val());
+$("#recieved-button").click(function() {
+    Library.recieved_by_library($("#recieved-book").val(), {gas: 3000000});
+
+    event_recieve_confirmed.watch(function(){
+    	$("#notify").html("Recieve confirmed");
+    	$("#notify-box").show();
+    });
 });
 
 $("#get_owner_button").click(function() {
@@ -273,4 +253,20 @@ $("#get_owner_button").click(function() {
             $("#owner_address").html("");
         }
     });
+});
+
+$("#get_status_button").click(function() {
+	Library.status.call($("#get_status_book_name").val(), function(error, result){
+		if(!error) {
+			var key = result["c"][0];
+			var ans;
+			if(key == 0) ans = "Stable";
+			else if(key == 1) ans = "To Be Returned";
+			else if(key == 2) ans = "To Be Collected";
+			else ans = "To Be Transferred";
+			$("#book_status").html(ans);
+		} else {
+			console.log(error);
+		}
+	});
 });
