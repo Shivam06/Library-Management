@@ -22,10 +22,10 @@ contract Library {
     
     event NotAvailable();
     event AllOccupied();
-    event CollectBookFromLibrary();
-    event YouDontHaveThisBook();
-    event ReturnBookToLibrary();
-    event CollectBookFromUser();
+    //event CollectBookFromLibrary();
+    //event YouDontHaveThisBook();
+    //event ReturnBookToLibrary();
+    //vent CollectBookFromUser();
     event RecieveConfirmedByUser();
     event RecieveConfirmedByLibrary();
     event ContractDeployed();
@@ -54,6 +54,8 @@ contract Library {
     {
         if (check_book(book_name) == false) {
             NotAvailable();
+            msg.sender.transfer(2*value);
+            // message[msg.sender] = "Book not available."; // Book name - One time
             return;
         }
         
@@ -63,23 +65,24 @@ contract Library {
                 preowner[book_name] = add;
                 owner[book_name] = msg.sender;
                 status[book_name] = State.TBT;
-                message[add] = "Coordinate with new owner with phone number : 999";
-                message[msg.sender] = "Book available with person with phone number: 988";
-                CollectBookFromUser();
+                message[add] = "Coordinate with new owner with phone number : 999"; //  All time
+                message[msg.sender] = "Collect book from member with phone number: 988";
+                //CollectBookFromUser();
                 return;
             }
             else {
                 AllOccupied();
                 msg.sender.transfer(2*value);
+                //message[msg.sender] = "Book occupied."; // Book name - One time
                 return;
             }
         }
         else {
             owner[book_name] = msg.sender;
             status[book_name] = State.TBC;
-            CollectBookFromLibrary();
+            //CollectBookFromLibrary();
             preowner[book_name] = libaddress;
-            message[msg.sender] = "Collect from library!";
+            message[msg.sender] = "Collect book from library!"; // All time
         }
     }
     
@@ -90,13 +93,19 @@ contract Library {
     {
         if(status[book_name] == State.TBC) {
             msg.sender.transfer(value);
+            // message[msg.sender] = "Ethers have been transferred to your account."; // Mention value - One 
+            // time
         }
         if(status[book_name] == State.TBT) {
             msg.sender.transfer(value);
             preowner[book_name].transfer(value);
+            //message[msg.sender] = "Recieve Confirmed! Ethers have been transferred to your account.";
+            message[preowner[book_name]] = "Recieve confirmed by the user. Ethers have been transferred to your account."; // Mention address of the user
         }
         status[book_name] = State.Stable;
         RecieveConfirmedByUser();
+        message[msg.sender] = "";
+        //message[msg.sender] = "Recieve Confirmed! Your ethers have been transferred to your account.";
     }
     
     function return_book(bytes32 book_name) 
@@ -107,23 +116,26 @@ contract Library {
             status[book_name] = State.Stable;
             owner[book_name] = libaddress;
             msg.sender.transfer(2*value);
-            message[msg.sender] = "Return Confirmed!";
+            //message[msg.sender] = "Return Confirmed!"; // One time
             ReturnConfirmed();
+            message[msg.sender] = "";
         }
         else if (status[book_name] == State.TBT) {
             status[book_name] = State.TBR;
             address add = owner[book_name];
             owner[book_name] = preowner[book_name];
-            msg.sender.transfer(2*value);
+            msg.sender.transfer(2*value); // All time
             message[owner[book_name]] = "Owner doesn't want the book anymore. Return to Library";
-            message[msg.sender] = "Return Confirmed!";
-            ReturnConfirmed();
+            //message[msg.sender] = "Return Confirmed! Your ethers have been transferred to your account.";
+            ReturnConfirmed(); // Problem
+            message[msg.sender] = "";
             return;
         }
         else {
-            ReturnBookToLibrary();
+            //ReturnBookToLibrary();
             status[book_name] = State.TBR;
             preowner[book_name] = msg.sender;
+            message[msg.sender] = "Return book to library"; // All time
             return;
         }
     }
@@ -137,13 +149,17 @@ contract Library {
             throw;
         }
         status[book_name] = State.Stable;
+        address add = owner[book_name];
         owner[book_name].transfer(value);
         owner[book_name] = libaddress;
         RecieveConfirmedByLibrary();
+        message[add] = "Library has recieved the book. Your ethers have been transferred to your account"; // One time
+        return; // Problem
     }
     
     function check_book(bytes32 book_name) 
         private 
+        constant
         returns(bool) 
     {
         for (uint i = 0; i < books.length; i++) {
@@ -155,6 +171,7 @@ contract Library {
     
     function get_owner(bytes32 book_name) 
         public 
+        constant // changed
         returns(address) 
     {
         if (check_book(book_name) == false)
@@ -166,6 +183,7 @@ contract Library {
 
     function access_message() 
         public 
+        constant
         returns(string) 
     {
         return message[msg.sender];
@@ -173,8 +191,16 @@ contract Library {
     
     function balance() 
         public 
+        constant
         returns(uint)
     {
         return msg.sender.balance; 
+    }
+    
+    function delete_message() 
+        public 
+    {
+        message[msg.sender] = "";  
+        return;
     }
 }
