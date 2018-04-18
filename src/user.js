@@ -1,4 +1,3 @@
-
 window.onload = function() {
 	update_balance();
 	update_message();
@@ -9,10 +8,11 @@ if (typeof web3 !== 'undefined') {
 	web3 = new Web3(web3.currentProvider);
 } 
 else {
-	web3 = new Web3(new Web3.providers.HttpProvider("http://10.60.31.117:8545"));
+	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 }
 
-web3.eth.defaultAccount = web3.eth.accounts[1];
+var num = Number($("#user-number").val());
+web3.eth.defaultAccount = web3.eth.accounts[num+1];
 
 var LibContract = web3.eth.contract([
 	{
@@ -233,7 +233,7 @@ var LibContract = web3.eth.contract([
 	}
 ]);
 
-var LibInstance = LibContract.at('0x2700ae13fb8b81f28c32bad9dc40b5ae5a494bd5');
+var LibInstance = LibContract.at('0xb427c9883b5202f2438bc08e2f57c5f2a049c3e9');
 
 
 //Event - Not Available
@@ -292,7 +292,8 @@ function update_message() {
 $("#request-button").click(function(){
 	var book = $("#request-book").val();
 	console.log(book);
-	LibInstance.request_book(book, {value:20000000000000000000, gas:3000000});
+	var val = 20000000000000000000; 
+	LibInstance.request_book(book, {value:val, gas:3000000});
 
 	event_not_available.watch(function() {
 		$("#notify").html("Book Not Available.")

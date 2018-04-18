@@ -5,7 +5,7 @@ window.onload = function() {
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
 } else {
-    web3 = new Web3(new Web3.providers.HttpProvider('http://10.60.31.117:8545'));
+    web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 }
 
 var accounts = web3.eth.accounts;
@@ -231,7 +231,7 @@ var LibraryContract = web3.eth.contract([
 	}
 ]);
 
-Library = LibraryContract.at('0x2700ae13fb8b81f28c32bad9dc40b5ae5a494bd5');
+Library = LibraryContract.at('0xb427c9883b5202f2438bc08e2f57c5f2a049c3e9');
 
 var event_recieve_confirmed = Library.RecieveConfirmedByLibrary();
 
