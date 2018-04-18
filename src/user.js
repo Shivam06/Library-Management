@@ -1,256 +1,38 @@
+// get value from contract
 window.onload = function() {
 	update_balance();
 	update_message();
 	$("#notify-box").hide();
 };
 
+json_data = JSON.parse(data);
+var url = json_data["url"];
+var abi = json_data["abi"];
+var gas_val = json_data["gas"];
+var address = json_data["address"];
+var val = json_data["value"];
+
+
 if (typeof web3 !== 'undefined') {
 	web3 = new Web3(web3.currentProvider);
 } 
 else {
-	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	web3 = new Web3(new Web3.providers.HttpProvider(url));
 }
-
 var num = Number($("#user-number").val());
 web3.eth.defaultAccount = web3.eth.accounts[num+1];
-
-var LibContract = web3.eth.contract([
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "ReturnConfirmed",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "AllOccupied",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "NotAvailable",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "RecieveConfirmedByUser",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "RecieveConfirmedByLibrary",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "ContractDeployed",
-		"type": "event"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "delete_message",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "book_name",
-				"type": "bytes32"
-			}
-		],
-		"name": "recieved_by_library",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "book_name",
-				"type": "bytes32"
-			}
-		],
-		"name": "recieved_by_user",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "book_name",
-				"type": "bytes32"
-			}
-		],
-		"name": "request_book",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "book_name",
-				"type": "bytes32"
-			}
-		],
-		"name": "return_book",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"name": "book_names",
-				"type": "bytes32[]"
-			}
-		],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "constructor"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "access_message",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "balance",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "book_name",
-				"type": "bytes32"
-			}
-		],
-		"name": "get_owner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "owner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "preowner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "status",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-]);
-
-var LibInstance = LibContract.at('0xb427c9883b5202f2438bc08e2f57c5f2a049c3e9');
+var LibContract = web3.eth.contract(abi);
+var LibInstance = LibContract.at(address);
 
 
 //Event - Not Available
 var event_not_available = LibInstance.NotAvailable();
-// Event - Collect from User
-//var event_collect_from_user = LibInstance.CollectBookFromUser();
-//Event - Collect from Library
-//var event_collect_from_library = LibInstance.CollectBookFromLibrary();
 // Event - All Occupied
 var event_all_occupied = LibInstance.AllOccupied();
 //Event - Recieve confirmed by user
 var event_recieve_confirmed = LibInstance.RecieveConfirmedByUser();
 //Event - Return confirmed
 var event_return_confirmed = LibInstance.ReturnConfirmed();
-// Event - Return to library
-//var event_return_book_to_library = LibInstance.ReturnBookToLibrary();
-
 
 
 // Get Balance JS - No button on load always call
@@ -287,29 +69,17 @@ function update_message() {
 	});
 }
 
-
 // Request JS
 $("#request-button").click(function(){
 	var book = $("#request-book").val();
 	console.log(book);
-	var val = 20000000000000000000; 
-	LibInstance.request_book(book, {value:val, gas:3000000});
+	LibInstance.request_book(book, {value:val, gas:gas_val});
 
 	event_not_available.watch(function() {
 		$("#notify").html("Book Not Available.")
 		$("#notify-box").show();
 		console.log("Not Available");
 	});
-
-	/*event_collect_from_user.watch(function() {
-		$("#notify").html("Collect book from user. See your message.")
-		console.log("Collect book from user");
-	 });*/
-
-	/*event_collect_from_library.watch(function() {
-		$("#notify").html("Collect book from library.")
-		console.log("Collect book from library");
-	});*/
 
 	event_all_occupied.watch(function() {
 		$("#notify").html("All Occupied!")
@@ -324,7 +94,7 @@ $("#request-button").click(function(){
 // Recieve JS
 $("#recieved-button").click(function(){
 	var book = $("#recieved-book").val();
-	LibInstance.recieved_by_user(book, {gas:3000000});
+	LibInstance.recieved_by_user(book, {gas:gas_val});
 
 	event_recieve_confirmed.watch(function(){
 		$("#notify").html("Recieve Confirmed! Your ethers have been transferred to your account.")
@@ -339,7 +109,7 @@ $("#recieved-button").click(function(){
 // Return JS
 $("#return-button").click(function(){
 	var book = $("#return-book").val();
-	LibInstance.return_book(book, {gas: 3000000});
+	LibInstance.return_book(book, {gas: gas_val});
 
 	event_return_confirmed.watch(function() {
 		$("#notify").html("Return Confirmed by Library")
@@ -349,10 +119,6 @@ $("#return-button").click(function(){
 
 	update_message();
 	update_balance();
-	/*event_return_book_to_library.watch(function() {
-		$("#notify").html("Return book to library.")
-		console.log("Return book to library.");
-	});*/
 }); // Write its events
 
 // Delete Message button
