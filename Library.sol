@@ -55,7 +55,7 @@ contract Library {
         if (check_book(book_name) == false) {
             NotAvailable();
             msg.sender.transfer(2*value);
-            messag[msg.sender] = "Book not available."; // Book name
+            message[msg.sender] = "Book not available."; // Book name
             return;
         }
         
