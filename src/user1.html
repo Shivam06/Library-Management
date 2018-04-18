@@ -5,53 +5,52 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>User 1</title>
 	<link rel="stylesheet" type="text/css" href="#">
 	<script src="./node_modules/web3/dist/web3.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 </head>
 <body>
-	<h1 align="center"> DTU Library - User 1 </h1>	
-	<br>
+	<h1 align="center"> DTU Library - User 1 </h1>
 
-	<div class = "output-box" align = "center" style="background-color: pink">
-		<p id ="output-one" style = "font-size: 25px"></p>
+	<div class="messages-container">
+		<div class = "message-box" align="center" style="background-color: pink">
+			<p id = "message" style = "font-size: 25px">Collect book from Library</p>
+		</div>
+		<div class = "notify-box" align="center" style="background-color: yellow">
+			<p id = "notify" style = "font-size: 25px"></p>
+		</div>
+	</div>
+
+	<div class = "functions_container" align="center">
+		<div class = "request-content" align="center">
+			<span><b>Request book</b></span><br>
+			<input type="text" name = "request" id="request-book" placeholder="Book Name"> 
+			<button type = "button" id = "request-button">Request</button>
+		</div>
+		<br>
+		<div class = "return-content" align="center">
+			<span><b>Return book</b></span><br>
+			<input type="text" name = "return" id="return-book" placeholder="Book Name"> 
+			<button type = "button" id = "return-button">Return</button>
+		</div>
+		<br>
+		<div class = "recieved-content" align="center">
+			<span><b>Confirm Recieve</b></span><br>
+			<input type="text" name = "recieved" id="recieved-book" placeholder="Book Name"> 
+			<button type = "button" id = "recieved-button">Recieve</button>
+		</div>
 	</div>
 
 	<br>
+	<br>
 
-	<div class = "request-content" align="center">
-		<span style = "margin-right: 17%">Request book: <br></span>
-		<input type="text" name = "request" id="request-book"> 
-		<button type = "button" id = "request-button"> Request </button>
-	</div>
-	<br>
-	<div class = "return-content" align="center">
-		<span style = "margin-right: 18%">Return book:</span> <br>
-		<input type="text" name = "return" id="return-book"> 
-		<button type = "button" id = "return-button"> Return </button>
-	</div>
-	<br>
-	<div class = "recieved-content" align="center">
-		<span style = "margin-right: 16%">Recieved Book: <br></span>
-		<input type="text" name = "recieved" id="recieved-book"> 
-		<button type = "button" id = "recieved-button"> Submit </button>
+	<div align="center">
+		<span align="center"><b>Balance:</b></span>
+		<span align="center" id ="balance-output">99 ethers</span>
+		<br>
 	</div>
 
-	<br> 
-	<br>
-
-	<div align = "center"><button id = 'balance-button' type = "button">Check Balance</button></div>
-
-	<p align = "center" id ="balance-output"></p>
-
-	<br>
-
-	<div align = "center"><button id = 'mesg-button' type = "button" onclick="" align = "center">Access Message</button></div>
-	
-	<br>
-
-	<div align = "center" id ="mesg-output"></div>
-
-	<script src = 'user1.js'></script>
+	<script type="text/javascript" src = 'user1.js'></script>
 </body>
 </html>
