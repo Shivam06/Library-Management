@@ -292,7 +292,7 @@ function update_message() {
 $("#request-button").click(function(){
 	var book = $("#request-book").val();
 	console.log(book);
-	LibInstance.request_book(book, {value:20000000000000000000, gas:3000000, from: web3.eth.accounts[2]});
+	LibInstance.request_book(book, {value:20000000000000000000, gas:3000000});
 
 	event_not_available.watch(function() {
 		$("#notify").html("Book Not Available.")
@@ -323,7 +323,7 @@ $("#request-button").click(function(){
 // Recieve JS
 $("#recieved-button").click(function(){
 	var book = $("#recieved-book").val();
-	LibInstance.recieved_by_user(book, {gas: 3000000});
+	LibInstance.recieved_by_user(book, {gas:3000000});
 
 	event_recieve_confirmed.watch(function(){
 		$("#notify").html("Recieve Confirmed! Your ethers have been transferred to your account.")
