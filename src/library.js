@@ -1,13 +1,14 @@
 if (typeof web3 !== 'undefined') {
-	web3 = new Web3(web3.currentProvider);
-} 
-else {
-	web3 = new Web3(new Web3.providers.HttpProvider("http://10.60.31.117:8545"));
+    web3 = new Web3(web3.currentProvider);
+} else {
+    web3 = new Web3(new Web3.providers.HttpProvider('http://10.60.31.117:8545'));
 }
 
-web3.eth.defaultAccount = web3.eth.accounts[2];
+var accounts = web3.eth.accounts;
 
-var LibContract = web3.eth.contract([
+web3.eth.defaultAccount = web3.eth.accounts[0];
+
+var LibraryContract = web3.eth.contract([
 	{
 		"anonymous": false,
 		"inputs": [],
@@ -240,114 +241,36 @@ var LibContract = web3.eth.contract([
 		"type": "function"
 	}
 ]);
+        
+Library = LibraryContract.at('0xc9aaf1dd281bb8fb7236cc0e0a2c5f5d60b60724');
 
-var LibInstance = LibContract.at('0xc9aaf1dd281bb8fb7236cc0e0a2c5f5d60b60724');
-
-//Event - Not Available
-var event_not_available = LibInstance.NotAvailable();
-
-
-// Event - Collect from User
-var event_collect_from_user = LibInstance.CollectBookFromUser();
-
-
-//Event - Collect from Library
-var event_collect_from_library = LibInstance.CollectBookFromLibrary();
-
-
-// Event - All Occupied
-var event_all_occupied = LibInstance.AllOccupied();
-
-
-//Event - Recieve confirmed by user
-var event_recieve_confirmed = LibInstance.RecieveConfirmedByUser();
-
-
-//Event - Return confirmed
-var event_return_confirmed = LibInstance.ReturnConfirmed();
-
-
-// Event - Return to library
-var event_return_book_to_library = LibInstance.ReturnBookToLibrary();
-
-
-// Get Balance JS
-$("#balance-button").click(function() {
-	LibInstance.balance.call(function(error, result) {
-		if (!error) {
-			var bal = Number(web3.fromWei(result, "ether"));
-			console.log(bal);
-			$("#balance-output").html("Balance: " + bal.valueOf() + " Ethers");
-		}
-		else {
-			console.log(errror);
-		}	
-	});
+Library.RecieveConfirmedByLibrary().watch(function(error){
+    if(!error) {
+        alert("Recieve Confirmed!");
+    } else {
+        alert('Some error occured');
+    }
 });
 
-// Message JS
-$("#mesg-button").click(function() {
-	LibInstance.access_message.call(function(error, result) {
-		if (!error) {
-			console.log(result.toString());
-			$("#mesg-output").html(result.toString());
-		}
-		else {
-			console.log(error);
-		}
-	});
+Library.NotAvailable().watch(function(error){
+    if(!error) {
+        alert("Book not available!");
+    } else {
+        alert("Some error occured");
+    }
 });
 
-// Request JS
-$("#request-button").click(function(){
-	var book = $("#request-book").val();
-	console.log(book);
-	LibInstance.request_book(book, {value:20000000000000000000, gas:3000000, from: web3.eth.accounts[2]});
-
-	event_not_available.watch(function() {
-		$("#output-two").html("Book Not Available.")
-		console.log("Not Available");
-	});
-
-	event_collect_from_user.watch(function() {
-		$("#output-two").html("Collect book from user. See your message.")
-		console.log("Collect book from user");
-	 });
-
-	event_collect_from_library.watch(function() {
-		$("#output-two").html("Collect book from library.")
-		console.log("Collect book from library");
-	});
-
-	event_all_occupied.watch(function() {
-		$("#output-two").html("All Occupied!")
-		console.log("All Occupied.");
-	});
+$("#recieve_confirm_button").click(function() {
+    Library.recieved_by_library($("#recieve_confirm_book_name").val());
 });
 
-// Recieve JS
-$("#recieved-button").click(function(){
-	var book = $("#recieved-book").val();
-	LibInstance.recieved_by_user(book);
-
-	event_recieve_confirmed.watch(function(){
-		$("#output-two").html("Recieve Confirmed! Your ethers have been transferred to your account.")
-		console.log("Recieve confirmed");
-	});
-}); // write its events
-
-// Return JS
-$("#return-button").click(function(){
-	var book = $("#return-book").val();
-	LibInstance.return_book(book);
-
-	event_return_confirmed.watch(function() {
-		$("#output-two").html("Return Confirmed by Library")
-		console.log("Return confirmed");
-	});
-
-	event_return_book_to_library.watch(function() {
-		$("#output-two").html("Return book to library.")
-		console.log("Return book to library.");
-	});
-}); // Write its events
+$("#get_owner_button").click(function() {
+    Library.get_owner.call($("#get_owner_book_name").val(), function(error, address){
+        if(!error) {
+            $("#owner_address").html(address);
+        } else {
+            console.log(error);
+            $("#owner_address").html("");
+        }
+    });
+});

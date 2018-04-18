@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>DTU Library</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+	<h1 align="center"> DTU Library</h1>
+    <br>
+	
+	<div class = "output-box" align = "center" style="background-color: pink">
+		<p id ="output-one" style = "font-size: 25px"></p>
+	</div>
+
+	<br>
+
+	<div class = "recieve-content" align="center">
+    	<span>Confirm Recieve</span>
+    	<br>
+    	<input id="recieve_confirm_book_name" name="book_name" placeholder="Book Name" type="text">
+    	<button id="recieve_confirm_button">Confirm Recieve</button>
+	</div>
+
+	<br>
+
+	<div class = "owner-content" align="center">
+	    <span>Get Owner</span>
+	    <br>
+	    <input id="get_owner_book_name" placeholder="Book Name" type="text">
+	    <button id="get_owner_button">Get Owner</button>
+	    <h3 id="owner_address"></h3>
+   	</div>
+
+    <script src="library.js"></script>
+</body>
+</html>
