@@ -233,7 +233,7 @@ var LibContract = web3.eth.contract([
 	}
 ]);
 
-var LibInstance = LibContract.at('0x0226dcf45eb20d6a5071e7a460a09322392bf762');
+var LibInstance = LibContract.at('0x2700ae13fb8b81f28c32bad9dc40b5ae5a494bd5');
 
 
 //Event - Not Available
@@ -292,7 +292,7 @@ function update_message() {
 $("#request-button").click(function(){
 	var book = $("#request-book").val();
 	console.log(book);
-	LibInstance.request_book(book, {value:20000000000000000000, gas:3000000, from: web3.eth.accounts[1]});
+	LibInstance.request_book(book, {value:20000000000000000000, gas:3000000});
 
 	event_not_available.watch(function() {
 		$("#notify").html("Book Not Available.")
@@ -323,7 +323,7 @@ $("#request-button").click(function(){
 // Recieve JS
 $("#recieved-button").click(function(){
 	var book = $("#recieved-book").val();
-	LibInstance.recieved_by_user(book);
+	LibInstance.recieved_by_user(book, {gas:3000000});
 
 	event_recieve_confirmed.watch(function(){
 		$("#notify").html("Recieve Confirmed! Your ethers have been transferred to your account.")
@@ -338,7 +338,7 @@ $("#recieved-button").click(function(){
 // Return JS
 $("#return-button").click(function(){
 	var book = $("#return-book").val();
-	LibInstance.return_book(book);
+	LibInstance.return_book(book, {gas: 3000000});
 
 	event_return_confirmed.watch(function() {
 		$("#notify").html("Return Confirmed by Library")
