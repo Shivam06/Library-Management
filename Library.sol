@@ -55,6 +55,7 @@ contract Library {
         if (check_book(book_name) == false) {
             NotAvailable();
             msg.sender.transfer(2*value);
+            messag[msg.sender] = "Book not available."; // Book name
             return;
         }
         
@@ -72,6 +73,7 @@ contract Library {
             else {
                 AllOccupied();
                 msg.sender.transfer(2*value);
+                message[msg.sender] = "Book occupied."; // Book name
                 return;
             }
         }
@@ -91,12 +93,16 @@ contract Library {
     {
         if(status[book_name] == State.TBC) {
             msg.sender.transfer(value);
+            message[msg.sender] = "Ethers have been transferred to your account."; // Mention value
         }
         if(status[book_name] == State.TBT) {
             msg.sender.transfer(value);
             preowner[book_name].transfer(value);
+            message[msg.sender] = "Recieve Confirmed! Ethers have been transferred to your account.";
+            message[preowner[book_name]] = "Recieve confirmed by the user. Ethers have been transferred to your account."; // Mention address of the user
         }
         status[book_name] = State.Stable;
+        message[msg.sender] = "Recieve Confirmed! Your ethers have been transferred to your account.";
         RecieveConfirmedByUser();
     }
     
@@ -125,6 +131,7 @@ contract Library {
             ReturnBookToLibrary();
             status[book_name] = State.TBR;
             preowner[book_name] = msg.sender;
+            message[msg.sender] = "Return book to library";
             return;
         }
     }
