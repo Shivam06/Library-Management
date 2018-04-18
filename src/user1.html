@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>User 1</title>
-	<link rel="stylesheet" type="text/css" href="#">
+	<link rel="stylesheet" type="text/css" href="user.css">
 	<script src="./node_modules/web3/dist/web3.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 </head>
@@ -14,13 +14,26 @@
 	<h1 align="center"> DTU Library - User 1 </h1>
 
 	<div class="messages-container">
-		<div class = "message-box" align="center" style="background-color: pink">
-			<p id = "message" style = "font-size: 25px">Collect book from Library</p>
+		<div class="message-box">
+			<div class = "message-box-div-1">
+				<button class="cross-button" id="delete-message">&#10006;</button>
+			</div>
+			<div class = "message-box-div-2" align="center">
+				<span id = "message" style = "font-size: 20px">Collect book from library</span>
+			</div>
 		</div>
-		<div class = "notify-box" align="center" style="background-color: yellow">
-			<p id = "notify" style = "font-size: 25px"></p>
+		<div class = "notify-box">
+			<div class="notify-box-div-1">
+				<button class="cross-button" id="delete-notify">&#10006;</button>
+			</div>
+			<div class="notify-box-div-2" align="center">
+				<span id = "notify" style = "font-size: 20px">All Occupied</span>
+			</div>
 		</div>
 	</div>
+
+	<br>
+	<br>
 
 	<div class = "functions_container" align="center">
 		<div class = "request-content" align="center">
@@ -40,14 +53,14 @@
 			<input type="text" name = "recieved" id="recieved-book" placeholder="Book Name"> 
 			<button type = "button" id = "recieved-button">Recieve</button>
 		</div>
+		<br>
 	</div>
 
 	<br>
-	<br>
 
 	<div align="center">
-		<span align="center"><b>Balance:</b></span>
-		<span align="center" id ="balance-output">99 ethers</span>
+		<span><b>Balance:</b></span>
+		<span id ="balance-output">0 ethers</span>
 		<br>
 	</div>
 
