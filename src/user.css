@@ -1,0 +1,20 @@
+.cross-button {
+	color: red;
+	font-size: 10px;
+}
+.message-box-div-1 {
+	float: right;
+	width: 40px;
+}
+.message-box-div-2 {
+	background-color: cyan;
+	margin-right: 40px;
+}
+.notify-box-div-1 {
+	float: right;
+	width: 40px;
+}
+.notify-box-div-2 {
+	background-color: yellow;
+	margin-right: 40px;
+}
