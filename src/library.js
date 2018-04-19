@@ -2,7 +2,7 @@ window.onload = function() {
 	$("#notify-box").hide();
 };
 
-json_data = JSON.parse(data);
+json_data = data;
 var url = json_data["url"];
 var abi = json_data["abi"];
 var gas_val = json_data["gas"];
