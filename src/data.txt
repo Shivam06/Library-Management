@@ -220,4 +220,4 @@ let data = {"url": "http://localhost:8545",
 		"type": "function"
 	}
 ]
-};
+	};
