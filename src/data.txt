@@ -1,2 +1,223 @@
-let data = '{"url":"http://localhost:8545","address":"0xb427c9883b5202f2438bc08e2f57c5f2a049c3e9","gas":3000000,"value":20000000000000000000,"abi":[{"anonymous":false,"inputs":[],"name":"ReturnConfirmed","type":"event"},{"anonymous":false,"inputs":[],"name":"AllOccupied","type":"event"},{"anonymous":false,"inputs":[],"name":"NotAvailable","type":"event"},{"anonymous":false,"inputs":[],"name":"RecieveConfirmedByUser","type":"event"},{"anonymous":false,"inputs":[],"name":"RecieveConfirmedByLibrary","type":"event"},{"anonymous":false,"inputs":[],"name":"ContractDeployed","type":"event"},{"constant":false,"inputs":[],"name":"delete_message","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"book_name","type":"bytes32"}],"name":"recieved_by_library","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"book_name","type":"bytes32"}],"name":"recieved_by_user","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"book_name","type":"bytes32"}],"name":"request_book","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"book_name","type":"bytes32"}],"name":"return_book","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"book_names","type":"bytes32[]"}],"payable":true,"stateMutability":"payable","type":"constructor"},{"constant":true,"inputs":[],"name":"access_message","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"balance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"book_name","type":"bytes32"}],"name":"get_owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"preowner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"status","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"}]}';
-	
+let data = {"url": "http://localhost:8545",
+  "address": "0x7335fe984981c355828e11ae1eae30ec5b7442e8",
+  "gas": 3000000,
+  "value": 20000000000000000000,
+  "abi": [
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "ReturnConfirmed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "AllOccupied",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "NotAvailable",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "RecieveConfirmedByUser",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "RecieveConfirmedByLibrary",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "ContractDeployed",
+		"type": "event"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "delete_message",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "book_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "recieved_by_library",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "book_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "recieved_by_user",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "book_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "request_book",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "book_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "return_book",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "book_names",
+				"type": "bytes32[]"
+			}
+		],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "access_message",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "balance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "book_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "get_owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "preowner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "status",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+};
