@@ -20,6 +20,8 @@ else {
 	web3 = new Web3(new Web3.providers.HttpProvider(url));
 }
 var num = Number($("#user-number").val());
+console.log(num);
+console.log(Number($("#user-number").val()));	
 web3.eth.defaultAccount = web3.eth.accounts[num+1];
 var LibContract = web3.eth.contract(abi);
 var LibInstance = LibContract.at(address);
@@ -131,3 +133,22 @@ $("#delete-message").click(function() {
 $("#delete-notify").click(function() {
 	$("#notify-box").hide();
 });
+
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
