@@ -34,15 +34,18 @@ body {
 h1 {
 	color:#008000;
 	size:50;
-	background-color: yellow;
+	background-color: #ffff33;
+	border-width: 2px;
+	border-color: #004d00;
+	border-style: solid;
 }
 
 #balance {
 	color: #004d00;
 	font-size: 20px;
-	background-color: yellow;
-	margin-left: 41%;
-	margin-right: 41%;
+	background-color: #ffff33;
+	margin-left: 40%;
+	margin-right: 40%;
 	padding:2px;
 	border-width: 5px;
 	border-color: #004d00;

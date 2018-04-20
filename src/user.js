@@ -10,7 +10,7 @@ var url = json_data["url"];
 var abi = json_data["abi"];
 var gas_val = json_data["gas"];
 var address = json_data["address"];
-var val = json_data["value"];
+var val = json_data["value"]*2;
 
 
 if (typeof web3 !== 'undefined') {
