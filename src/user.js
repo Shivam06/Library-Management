@@ -93,7 +93,7 @@ $("#request-button").click(function(){
 
 // Recieve JS
 $("#recieved-button").click(function(){
-	var book = $("#recieved-book").val();
+	var book = $("#return-recieved-book").val();
 	LibInstance.recieved_by_user(book, {gas:gas_val});
 
 	event_recieve_confirmed.watch(function(){
@@ -108,7 +108,7 @@ $("#recieved-button").click(function(){
 
 // Return JS
 $("#return-button").click(function(){
-	var book = $("#return-book").val();
+	var book = $("#return-recieved-book").val();
 	LibInstance.return_book(book, {gas: gas_val});
 
 	event_return_confirmed.watch(function() {

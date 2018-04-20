@@ -7,8 +7,10 @@
 	width: 40px;
 }
 .message-box-div-2 {
-	background-color: cyan;
+	background-color: #005ce6;
 	margin-right: 40px;
+	color: white;
+	font-weight: bold;
 }
 .notify-box-div-1 {
 	float: right;
@@ -17,4 +19,47 @@
 .notify-box-div-2 {
 	background-color: yellow;
 	margin-right: 40px;
+	background-color: #ff4dc4;
+	color: white;
+	font-weight: bold;
+}
+body { 
+    background-image: url('dtu');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: 100%
+}
+
+h1 {
+	color:#008000;
+	size:50;
+	background-color: yellow;
+}
+
+#balance {
+	color: #004d00;
+	font-size: 20px;
+	background-color: yellow;
+	margin-left: 41%;
+	margin-right: 41%;
+	padding:2px;
+	border-width: 5px;
+	border-color: #004d00;
+	border-style: solid;
+	border-radius: 10%;
+	font-size: 15px;
+}
+
+button {
+	color: #005ce6;
+}
+
+#balance-output {
+
+	font-size: 15px;
+}
+
+input {
+
 }
