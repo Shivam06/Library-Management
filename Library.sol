@@ -30,6 +30,8 @@ contract Library {
     event RecieveConfirmedByLibrary();
     event ContractDeployed();
     event ReturnConfirmed();
+    event BookAlreadyPresent();
+    event NewBookAdded();
     
     function Library(bytes32[] book_names) 
         checkNonZeroValue(msg.value)
@@ -52,7 +54,7 @@ contract Library {
         checkNotOwner(book_name)
         payable
     {
-        if (check_book(book_name) == false) {
+        if (check_book(book_name) == 0) {
             NotAvailable();
             msg.sender.transfer(2*value);
             // message[msg.sender] = "Book not available."; // Book name - One time
@@ -160,13 +162,15 @@ contract Library {
     function check_book(bytes32 book_name) 
         private 
         constant
-        returns(bool) 
+        returns(uint256) 
     {
-        for (uint i = 0; i < books.length; i++) {
+        uint256 i = 0;
+        while (i < books.length) {
             if (books[i] == book_name)
-                return true;
+                return i+1;
+            i++;
         }
-        return false;
+        return 0;
     }
     
     function get_owner(bytes32 book_name) 
@@ -174,7 +178,7 @@ contract Library {
         constant // changed
         returns(address) 
     {
-        if (check_book(book_name) == false)
+        if (check_book(book_name) == 0)
             throw;
             
         return owner[book_name];
@@ -203,4 +207,49 @@ contract Library {
         message[msg.sender] = "";  
         return;
     }
+    
+    function get_books()
+        checkLibrary()
+        public
+        constant
+        returns(bytes32[])
+    {
+        return books;
+    }
+    
+    function add_book(bytes32 book_name)
+        public
+        checkLibrary()
+    {
+        if(check_book(book_name) != 0){
+            BookAlreadyPresent();
+            return;
+        }
+        books.push(book_name);
+        owner[book_name] = libaddress;
+        NewBookAdded();
+    }
+    
+    /*function remove_book(bytes32 book_name)
+        public
+        checkLibrary()
+    {
+        int256 index = check_book(book_name);
+        if(index == -1){
+            return;
+        }
+        if(status[book_name] != State.Stable)
+        {
+            BookNotStable();
+            return;
+        }
+        if(owner[book_name] != libaddress)
+        {
+            BookOwnedBySomeUser();
+            return;
+        }
+        books.remove(index);
+        delete owner[book_name];
+        delete status[book_name];
+    }*/
 }
