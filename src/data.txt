@@ -1,7 +1,6 @@
 let data = {"url": "http://localhost:8545",
-  	"address": "0x6a123d3f6cb31c93affd3e50a74e2e0131ee0f05",
+  	"address": "0xdd067d9cbe5a5992440a7e72d403c0c076e9cf95",
   	"gas": 3000000,
-  	"value": 20000000000000000000,
   	"abi": [
 	{
 		"anonymous": false,
@@ -24,18 +23,9 @@ let data = {"url": "http://localhost:8545",
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [],
-		"name": "delete_message",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [],
-		"name": "RecieveConfirmedByUser",
+		"name": "BookAlreadyPresent",
 		"type": "event"
 	},
 	{
@@ -47,7 +37,7 @@ let data = {"url": "http://localhost:8545",
 	{
 		"anonymous": false,
 		"inputs": [],
-		"name": "NotAvailable",
+		"name": "ContractDeployed",
 		"type": "event"
 	},
 	{
@@ -59,20 +49,29 @@ let data = {"url": "http://localhost:8545",
 	{
 		"anonymous": false,
 		"inputs": [],
+		"name": "RecieveConfirmedByUser",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
 		"name": "AllOccupied",
 		"type": "event"
 	},
 	{
 		"anonymous": false,
 		"inputs": [],
-		"name": "BookAlreadyPresent",
+		"name": "NotAvailable",
 		"type": "event"
 	},
 	{
-		"anonymous": false,
+		"constant": false,
 		"inputs": [],
-		"name": "ContractDeployed",
-		"type": "event"
+		"name": "delete_message",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"constant": false,
@@ -196,6 +195,20 @@ let data = {"url": "http://localhost:8545",
 			{
 				"name": "",
 				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "get_value",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,

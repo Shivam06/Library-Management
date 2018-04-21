@@ -31,15 +31,15 @@ body {
     background-size: 100%
 }
 
-h1 {
+#h1 {
 	color:#008000;
-	size:50;
+	font-size: 35px;
 	background-color: #ffff33;
 	border-width: 5px;
 	border-color: #008000;
 	border-style: solid;
-	font-weight: normal;
-	padding:0px;
+	font-weight: bold;
+	padding:none;
 }
 
 #balance {

@@ -10,8 +10,6 @@ var url = json_data["url"];
 var abi = json_data["abi"];
 var gas_val = json_data["gas"];
 var address = json_data["address"];
-var val = json_data["value"];
-
 
 if (typeof web3 !== 'undefined') {
 	web3 = new Web3(web3.currentProvider);
@@ -22,12 +20,11 @@ else {
 
 var num;
 num = Number($("#user-number").text());
-console.log(num);
 
 web3.eth.defaultAccount = web3.eth.accounts[num];
 var LibContract = web3.eth.contract(abi);
 var LibInstance = LibContract.at(address);
-
+val = Number(LibInstance.get_value.call())*2;
 
 //Event - Not Available
 var event_not_available = LibInstance.NotAvailable();

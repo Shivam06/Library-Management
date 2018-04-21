@@ -230,6 +230,14 @@ contract Library {
         NewBookAdded();
     }
     
+    function get_value()
+        public
+        constant
+        returns(uint)
+    {
+        return value;
+    }   
+    
     /*function remove_book(bytes32 book_name)
         public
         checkLibrary()
