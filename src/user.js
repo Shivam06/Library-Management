@@ -10,7 +10,7 @@ var url = json_data["url"];
 var abi = json_data["abi"];
 var gas_val = json_data["gas"];
 var address = json_data["address"];
-var val = json_data["value"]*2;
+var val = json_data["value"];
 
 
 if (typeof web3 !== 'undefined') {
@@ -19,10 +19,12 @@ if (typeof web3 !== 'undefined') {
 else {
 	web3 = new Web3(new Web3.providers.HttpProvider(url));
 }
-var num = Number($("#user-number").val());
+
+var num;
+num = Number($("#user-number").text());
 console.log(num);
-console.log(Number($("#user-number").val()));	
-web3.eth.defaultAccount = web3.eth.accounts[num+1];
+
+web3.eth.defaultAccount = web3.eth.accounts[num];
 var LibContract = web3.eth.contract(abi);
 var LibInstance = LibContract.at(address);
 
