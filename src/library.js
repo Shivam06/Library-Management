@@ -54,7 +54,7 @@ var event_book_added = LibInstance.NewBookAdded();
 var event_book_already_present = LibInstance.BookAlreadyPresent();
 
 $("#recieved-button").click(function() {
-    LibInstance.recieved_by_library($("#recieved-book").val(), {gas: gas_val});
+    LibInstance.recieved_by_library($("#book-name").val(), {gas: gas_val});
 
     event_recieve_confirmed.watch(function(){
     	$("#notify").html("Recieve confirmed");
@@ -62,10 +62,35 @@ $("#recieved-button").click(function() {
     });
 });
 
+$("#get-owner-button").click(function() {
+    LibInstance.get_owner.call($("#book-name").val(), function(error, address){
+        if(!error) {
+            $("#output").html("Owner: " + address);
+        } else {
+            console.log(error);
+            $("#output").html("");
+        }
+    });
+});
+
+$("#get-status-button").click(function() {
+	LibInstance.status.call($("#book-name").val(), function(error, result){
+		if(!error) {
+			var key = result["c"][0];
+			var ans;
+			if(key == 0) ans = "Stable";
+			else if(key == 1) ans = "To Be Returned";
+			else if(key == 2) ans = "To Be Collected";
+			else ans = "To Be Transferred";
+			$("#output").html("Book Status: " + ans);
+		} else {
+			console.log(error);
+		}
+	});
+});
+
 $("#add-book-button").click(function() {
-    console.log("hello");   
-    var book = $("#add-book-name").val();
-    alert(book);
+    var book = $("#book-name").val();
     LibInstance.add_book(book, {gas: gas_val});
 
     event_book_added.watch(function() {
@@ -79,29 +104,6 @@ $("#add-book-button").click(function() {
     });
 });
 
-$("#get-owner-button").click(function() {
-    LibInstance.get_owner.call($("#get-owner-book-name").val(), function(error, address){
-        if(!error) {
-            $("#owner-address").html(address);
-        } else {
-            console.log(error);
-            $("#owner-address").html("");
-        }
-    });
-});
-
-$("#get-status-button").click(function() {
-	LibInstance.status.call($("#get-status-book-name").val(), function(error, result){
-		if(!error) {
-			var key = result["c"][0];
-			var ans;
-			if(key == 0) ans = "Stable";
-			else if(key == 1) ans = "To Be Returned";
-			else if(key == 2) ans = "To Be Collected";
-			else ans = "To Be Transferred";
-			$("#book-status").html(ans);
-		} else {
-			console.log(error);
-		}
-	});
+$("#delete-notify").click(function() {
+    $("#notify-box").hide();
 });
