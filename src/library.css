@@ -7,6 +7,47 @@
 	width: 40px;
 }
 .notify-box-div-2 {
-	background-color: yellow;
+	background-color: #ff4dc4;
 	margin-right: 40px;
+	color: white;
+	font-weight: bold;
+}
+body { 
+    background-image: url('dtu');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: 100%
+}
+#h1 {
+	color:#008000;
+	font-size: 35px;
+	background-color: #ffff33;
+	border-width: 5px;
+	border-color: #008000;
+	border-style: solid;
+	font-weight: bold;
+	padding:none;
+}
+#output-div {
+	color: #004d00;
+	font-size: 20px;
+	background-color: #ffff33;
+	margin-left: 30%;
+	margin-right: 30%;
+	padding:2px;
+	border-width: 5px;
+	border-color: #004d00;
+	border-style: solid;
+	border-radius: 10%;
+	font-size: 15px;
+}
+#output {
+	font-size: 15px;
+}
+button {
+	color: #005ce6;
+}
+input {
+	width: 350px;
 }
